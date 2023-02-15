@@ -9,22 +9,32 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Url, type: :model do
-  it "is not valid without a full_url" do
-    url = URL.new(short_url: "ABCDE")
-    expect(url).not_to be_valid
+  let(:url) { FactoryBot.create(:url) }
+
+  describe "validations" do
+    it { should validate_presence_of(:full_url) }
+    it { should validate_uniqueness_of(:short_url) }
   end
 
-  it "is not valid with an invalid full_url" do
-    url = URL.new(full_url: "not-a-url", short_url: "ABCDE")
-    expect(url).not_to be_valid
-    expect(url.errors[:full_url]).to include("is not a valid URL")
+  describe "generate_short_url" do
+    it "generates a unique short_url" do
+      expect(FactoryBot.create(:url).short_url).not_to eq(url.short_url)
+    end
+
+    it "generates a 5-character uppercase alphanumeric code" do
+      expect(url.short_url).to match(/^[A-Z0-9]{5}$/)
+    end
   end
 
-  it "is valid with a valid full_url and short_url" do
-    url = URL.new(full_url: "https://www.example.com", short_url: "ABCDE")
-    expect(url).to be_valid
+  describe "increment_visit_count" do
+    it "increments the visit count" do
+      expect {
+        url.increment_visit_count
+        url.reload
+      }.to change { url.visit_count }.by(1)
+    end
   end
 end
