@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root 'urls#index'
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :urls, only: [:create, :show]
+
+  get '/:short_url', to: 'urls#redirect', as: :go_to_url
+  get '/top', to: 'urls#top', as: :top_urls
+
+  post 'urls/:id/visit', to: 'urls#visit', as: 'url_visit'
 end

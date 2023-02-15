@@ -1,0 +1,65 @@
+<div class="flex flex-col space-y-4">
+  <h2 class="text-xl font-medium">Create a short URL</h2>
+  <%= form_for @url, url: urls_path, method: :post do |f| %>
+    <% if @url.errors.any? %>
+      <div class="bg-red-200 text-red-800 p-2 rounded">
+        <h4 class="font-bold mb-2"><%= pluralize(@url.errors.count, "error") %> prohibited this URL from being saved:</h4>
+        <ul class="list-disc ml-4">
+          <% @url.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="flex items-center space-x-2">
+      <%= f.text_field :full_url, class: "flex-grow py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent", placeholder: "Enter URL here" %>
+      <%= f.submit "Shorten", class: "px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md" %>
+    </div>
+  <% end %>
+  
+  <div class="flex flex-col space-y-4">
+    <div class="bg-white rounded-lg shadow-lg">
+      <h2 class="text-xl font-medium py-4 px-6 border-b border-gray-200">Top 10 visited URLs</h2>
+      <table class="table-auto w-full">
+        <thead>
+          <tr>
+            <th class="text-left px-6 py-3 bg-gray-100">Short URL</th>
+            <th class="text-left px-6 py-3 bg-gray-100">Full URL</th>
+            <th class="text-left px-6 py-3 bg-gray-100">Visit Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @urls.each do |url| %>
+            <tr data-url-id="<%= url.id %>">
+              <td class="border px-6 py-3 text-blue-500 hover:underline"><%= link_to url.short_url, go_to_url_path(short_url: url.short_url), onclick: "updateVisitCount(#{url.id})", target: "_blank" %></td>
+              <td class="border px-6 py-3 text-blue-500 hover:underline"><%= link_to truncate(url.full_url, length: 50), url.full_url, target: "_blank" %></td>
+              <td class="border px-6 py-3"><span id="visit-count-<%= url.id %>"><%= url.visit_count %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-lg">
+      <h2 class="text-xl font-medium py-4 px-6 border-b border-gray-200">Recently created URLs</h2>
+      <table class="table-auto w-full">
+        <thead>
+          <tr>
+            <th class="text-left px-6 py-3 bg-gray-100">Short URL</th>
+            <th class="text-left px-6 py-3 bg-gray-100">Full URL</th>
+            <th class="text-left px-6 py-3 bg-gray-100">Created at</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recently_created_urls.each do |url| %>
+            <tr data-url-id="<%= url.id %>">
+              <td class="border px-6 py-3 text-blue-500 hover:underline"><%= link_to url.short_url, go_to_url_path(short_url: url.short_url), onclick: "updateVisitCount(#{url.id})", target: "_blank" %></td>
+              <td class="border px-6 py-3 text-blue-500 hover:underline"><%= link_to truncate(url.full_url, length: 50), url.full_url, target: "_blank" %></td>
+              <td class="border px-6 py-3"><span id="visit-count-<%= url.id %>"><%= url.visit_count %></span></td>
+            </tr>
+            <% end %>
+        </tbody>
+        </table>
+    </div>
+  </div>
+</div>
