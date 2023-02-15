@@ -69,4 +69,6 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+  config.include FactoryBot::Syntax::Methods
+  config.include ActiveSupport::Testing::TimeHelpers
 end
