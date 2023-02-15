@@ -20,7 +20,7 @@ class UrlsController < ApplicationController
     @url = Url.find_by(short_url: params[:id])
     if @url
       @url.increment_visit_count
-      redirect_to @url.full_url
+      redirect_to @url.full_url, allow_other_host: true
     else
       render file: "#{Rails.root}/public/404.html", status: :not_found
     end
