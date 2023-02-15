@@ -64,10 +64,13 @@ group :development do
   # gem "spring"
 end
 
-
 gem "annotate", "~> 3.2"
 
 gem "faker", "~> 3.1"
 gem "ransack", "~> 4.0"
 
 gem "rspec-rails", "~> 6.0"
+
+gem "tailwindcss-rails", "~> 2.0"
+
+gem "rack-cors", "~> 2.0"
