@@ -52,10 +52,10 @@
         </thead>
         <tbody>
           <% @recently_created_urls.each do |url| %>
-            <tr data-url-id="<%= url.id %>">
+            <tr data-url-id="<%= url.id %>" class="border px-6 py-3 text-blue-500 hover:underline">
               <td class="border px-6 py-3 text-blue-500 hover:underline"><%= link_to url.short_url, go_to_url_path(short_url: url.short_url), onclick: "updateVisitCount(#{url.id})", target: "_blank" %></td>
               <td class="border px-6 py-3 text-blue-500 hover:underline"><%= link_to truncate(url.full_url, length: 50), url.full_url, target: "_blank" %></td>
-              <td class="border px-6 py-3"><span id="visit-count-<%= url.id %>"><%= url.visit_count %></span></td>
+              <td class="border px-6 py-3"><span id="visit-count-<%= url.id %>"><%= time_ago_in_words(url.created_at) %> ago</span></td>
             </tr>
             <% end %>
         </tbody>
