@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   resources :urls, only: [:create, :show]
 
   get '/:short_url', to: 'urls#redirect', as: :go_to_url
-  get '/top', to: 'urls#top', as: :top_urls
+
+  namespace :api do
+    namespace :v1 do
+      resources :urls, only: [:index]
+    end
+  end
 
   post 'urls/:id/visit', to: 'urls#visit', as: 'url_visit'
 end
